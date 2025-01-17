@@ -179,7 +179,7 @@ export default function Home() {
           </Button>
           <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link
-              href="https://github.com/danmaby/OpenWebEvents"
+              href="https://github.com/OpenWebEvents"
               target="_blank"
               rel="noopener noreferrer"
             >
