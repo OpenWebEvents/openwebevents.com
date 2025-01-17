@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Twitter, Linkedin } from "lucide-react";
+import { Twitter, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -175,6 +175,16 @@ export default function Home() {
             >
               <Linkedin className="mr-2 h-4 w-4" />
               LinkedIn
+            </Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link
+              href="https://github.com/danmaby/OpenWebEvents"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="mr-2 h-4 w-4" />
+              GitHub
             </Link>
           </Button>
         </div>
