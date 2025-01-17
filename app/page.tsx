@@ -156,8 +156,8 @@ export default function Home() {
 
       <section className="text-center space-y-4">
         <h2 className="text-3xl font-bold">Connect With Us</h2>
-        <div className="flex justify-center space-x-4">
-          <Button variant="outline" asChild>
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:space-x-4">
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link
               href="https://x.com/OpenWebEvents"
               target="_blank"
@@ -167,7 +167,7 @@ export default function Home() {
               Twitter
             </Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link
               href="https://www.linkedin.com/company/openwebevents"
               target="_blank"
@@ -177,7 +177,7 @@ export default function Home() {
               LinkedIn
             </Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="w-full sm:w-auto">
             <Link
               href="https://github.com/danmaby/OpenWebEvents"
               target="_blank"
