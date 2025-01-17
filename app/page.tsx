@@ -15,6 +15,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("Submitting form...");
 
     try {
       const res = await fetch("/api/subscribe", {
@@ -23,18 +24,27 @@ export default function Home() {
         body: JSON.stringify({ email }),
       });
 
-      if (!res.ok) throw new Error();
+      const data = await res.json();
+      console.log("Response:", { status: res.status, data });
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to subscribe");
+      }
 
       setEmail("");
+      console.log("Showing success toast...");
       toast({
         title: "Success!",
         description: "You've been subscribed to our newsletter.",
+        duration: 5000,
       });
     } catch {
+      console.log("Showing error toast...");
       toast({
         title: "Error",
         description: "Failed to subscribe. Please try again.",
         variant: "destructive",
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);
