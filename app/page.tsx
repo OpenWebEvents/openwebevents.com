@@ -1,9 +1,46 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Twitter, Linkedin } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      setEmail("");
+      toast({
+        title: "Success!",
+        description: "You've been subscribed to our newsletter.",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 space-y-12 py-8">
       <section className="text-center space-y-4">
@@ -48,10 +85,16 @@ export default function Home() {
 
       <section className="space-y-4 max-w-md mx-auto">
         <h2 className="text-3xl font-bold text-center">Stay Updated</h2>
-        <form className="space-y-2">
-          <Input type="email" placeholder="Enter your email" required />
-          <Button type="submit" className="w-full">
-            Subscribe
+        <form className="space-y-2" onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Subscribing..." : "Subscribe"}
           </Button>
         </form>
       </section>
@@ -61,7 +104,7 @@ export default function Home() {
         <div className="flex justify-center space-x-4">
           <Button variant="outline" asChild>
             <Link
-              href="https://twitter.com/OpenWebEvents"
+              href="https://x.com/OpenWebEvents"
               target="_blank"
               rel="noopener noreferrer"
             >
