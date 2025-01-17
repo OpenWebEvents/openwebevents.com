@@ -9,24 +9,46 @@ interface Subscriber {
 const config = createClient(process.env.EDGE_CONFIG);
 
 export async function POST(request: Request) {
+  if (!config) {
+    return NextResponse.json(
+      { error: "Edge Config not initialized" },
+      { status: 500 }
+    );
+  }
+
   try {
     const { email } = await request.json();
 
-    const currentSubscribers = ((await config.get("subscribers")) ||
-      []) as Subscriber[];
+    // Get current subscribers
+    const currentSubscribers = await config.get<Subscriber[]>("subscribers");
 
-    const updatedSubscribers: Subscriber[] = [
-      ...currentSubscribers,
+    // Initialize or update subscribers array
+    const updatedSubscribers = [
+      ...(currentSubscribers || []),
       {
         email,
         subscribedAt: new Date().toISOString(),
       },
     ];
 
-    // Use type assertion only for the specific operation
-    await (
-      config as unknown as { set(key: string, value: unknown): Promise<void> }
-    ).set("subscribers", updatedSubscribers);
+    // Update using Vercel Edge Config API
+    const response = await fetch(
+      "https://api.vercel.com/v1/edge-config/items",
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: [{ key: "subscribers", value: updatedSubscribers }],
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to update Edge Config: ${response.status}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
