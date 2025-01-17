@@ -92,7 +92,7 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 space-y-12 py-8">
       <section className="text-center space-y-4">
-        <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl">
+        <h1 className="text-5xl font-bold sm:text-6xl md:text-7xl bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text">
           Open Web Events
         </h1>
         <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
@@ -104,7 +104,10 @@ export default function Home() {
         </Button>
       </section>
 
-      <section id="about" className="space-y-4 max-w-3xl mx-auto">
+      <section
+        id="about"
+        className="space-y-6 max-w-3xl mx-auto backdrop-blur-sm bg-card/50 p-8 rounded-lg border"
+      >
         <h2 className="text-3xl font-bold">About Us</h2>
         <p>
           Open Web Events and the Open Web Conference are dedicated to bringing
@@ -122,17 +125,31 @@ export default function Home() {
         </p>
         <h3 className="text-2xl font-semibold">Open Web Conference</h3>
         <p>
-          Open Web Conference is our flagship annual event, bringing together a
-          diverse group of speakers and attendees to discuss the latest trends,
-          challenges, and innovations in the open-source world. The conference
-          features keynote presentations, panel discussions, and hands-on
-          workshops designed to inspire and empower participants to advance the
-          open web.
+          <a
+            href="https://openwebconference.com"
+            className="text-primary hover:underline transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open Web Conference
+          </a>{" "}
+          is our flagship annual event, bringing together a diverse group of
+          speakers and attendees to discuss the latest trends, challenges, and
+          innovations in the open-source world. The conference features keynote
+          presentations, panel discussions, and hands-on workshops designed to
+          inspire and empower participants to advance the open web.
         </p>
       </section>
 
-      <section className="space-y-4 max-w-md mx-auto">
-        <h2 className="text-3xl font-bold text-center">Stay Updated</h2>
+      <section className="space-y-6 max-w-3xl mx-auto backdrop-blur-sm bg-card/50 p-8 rounded-lg border">
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text">
+          Stay Updated
+        </h2>
+        <p className="text-center text-muted-foreground">
+          Subscribe to our newsletter to stay updated on our latest events,
+          workshops, and community activities. Your email will not be shared
+          with anyone else.
+        </p>
         <form className="space-y-2" onSubmit={handleSubmit}>
           <Input
             type="email"
@@ -188,16 +205,6 @@ export default function Home() {
             </Link>
           </Button>
         </div>
-      </section>
-
-      <section className="text-center space-y-2 text-sm text-muted-foreground">
-        <Link href="/privacy-policy" className="hover:underline">
-          Privacy Policy
-        </Link>
-        <span> | </span>
-        <Link href="/code-of-conduct" className="hover:underline">
-          Code of Conduct
-        </Link>
       </section>
     </div>
   );

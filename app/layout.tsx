@@ -79,9 +79,40 @@ export default function RootLayout({
             </Link>
             <ModeToggle />
           </header>
-          <main>{children}</main>
-          <footer className="container mx-auto p-4 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Open Web Events. All rights reserved.
+          <main className="bg-gradient-to-b from-background to-muted">
+            {children}
+          </main>
+          <footer className="container mx-auto p-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 text-sm text-muted-foreground">
+              <div>
+                © {new Date().getFullYear()}{" "}
+                <a
+                  href="https://openwebevents.com"
+                  className="text-primary hover:underline transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open Web Events
+                </a>
+                . All rights reserved.
+              </div>
+              <div className="hidden sm:block">•</div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/privacy-policy"
+                  className="hover:underline hover:text-primary transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <span>•</span>
+                <Link
+                  href="/code-of-conduct"
+                  className="hover:underline hover:text-primary transition-colors"
+                >
+                  Code of Conduct
+                </Link>
+              </div>
+            </div>
           </footer>
           <Toaster />
         </ThemeProvider>
