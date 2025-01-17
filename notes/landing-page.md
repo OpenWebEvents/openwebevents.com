@@ -14,7 +14,7 @@ Whether you're a seasoned developer, a designer, a business owner, or someone pa
 
 _For more information and to stay updated on our events, please visit our websites:_
 
-- **Open Web Events**: [openwebevents.com](https://openwebevents.com)
+- **Open Web Events**: [openwebevents.com](https://www.openwebevents.com)
 - **Open Web Conference**: [openwebconference.com](https://openwebconference.com)
 
 _Connect with us on social media:_
