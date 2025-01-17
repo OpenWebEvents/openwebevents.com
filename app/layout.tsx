@@ -3,6 +3,7 @@ import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
 import ModeToggle from "@/components/mode-toggle";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Open Web Events | Fostering Open-Source Community",
@@ -82,6 +83,7 @@ export default function RootLayout({
           <footer className="container mx-auto p-4 text-center text-sm text-muted-foreground">
             © {new Date().getFullYear()} Open Web Events. All rights reserved.
           </footer>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
