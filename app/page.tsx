@@ -4,50 +4,88 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Twitter, Linkedin } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+interface Turnstile {
+  render: (container: string | HTMLElement, options: object) => string;
+  reset: (widgetId?: string) => void;
+  getResponse: (widgetId?: string) => string | undefined;
+  remove: (widgetId?: string) => void;
+}
+
+declare global {
+  interface Window {
+    turnstile: Turnstile;
+  }
+}
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Load Turnstile script
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("Submitting form...");
 
     try {
+      const token = document.querySelector<HTMLInputElement>(
+        '[name="cf-turnstile-response"]'
+      )?.value;
+
+      if (!token) {
+        throw new Error("Please complete the challenge");
+      }
+
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email,
+          token,
+        }),
       });
 
       const data = await res.json();
-      console.log("Response:", { status: res.status, data });
 
       if (!res.ok) {
         throw new Error(data.error || "Failed to subscribe");
       }
 
       setEmail("");
-      console.log("Showing success toast...");
       toast({
         title: "Success!",
         description: "You've been subscribed to our newsletter.",
         duration: 5000,
       });
-    } catch {
-      console.log("Showing error toast...");
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to subscribe. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to subscribe. Please try again.",
         variant: "destructive",
         duration: 5000,
       });
     } finally {
       setIsLoading(false);
+      // Reset Turnstile
+      window.turnstile?.reset();
     }
   };
 
@@ -103,6 +141,13 @@ export default function Home() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <div className="flex justify-center">
+            <div
+              className="cf-turnstile"
+              data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+              data-theme="auto"
+            />
+          </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Subscribing..." : "Subscribe"}
           </Button>

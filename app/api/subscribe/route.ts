@@ -17,7 +17,28 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { email } = await request.json();
+    const { email, token } = await request.json();
+
+    // Verify Turnstile token
+    const formData = new URLSearchParams();
+    formData.append("secret", process.env.TURNSTILE_SECRET_KEY!);
+    formData.append("response", token);
+
+    const result = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const outcome = await result.json();
+    if (!outcome.success) {
+      return NextResponse.json(
+        { error: "Invalid Turnstile token" },
+        { status: 400 }
+      );
+    }
 
     // Get current subscribers
     const currentSubscribers = await config.get<Subscriber[]>("subscribers");
