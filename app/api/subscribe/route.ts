@@ -31,9 +31,13 @@ export async function POST(request: Request) {
       },
     ];
 
+    // Extract Edge Config ID from the connection string
+    const edgeConfigUrl = new URL(process.env.EDGE_CONFIG || "");
+    const edgeConfigId = edgeConfigUrl.pathname.split("/").pop();
+
     // Update using Vercel Edge Config API
     const response = await fetch(
-      "https://api.vercel.com/v1/edge-config/items",
+      `https://api.vercel.com/v1/edge-config/${edgeConfigId}/items`,
       {
         method: "PATCH",
         headers: {
@@ -41,12 +45,23 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          items: [{ key: "subscribers", value: updatedSubscribers }],
+          items: [
+            {
+              operation: "update",
+              key: "subscribers",
+              value: updatedSubscribers,
+            },
+          ],
         }),
       }
     );
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Edge Config Error:", {
+        status: response.status,
+        body: errorText,
+      });
       throw new Error(`Failed to update Edge Config: ${response.status}`);
     }
 
