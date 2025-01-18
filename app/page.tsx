@@ -100,7 +100,7 @@ export default function Home() {
           and the open web.
         </p>
         <Button asChild>
-          <Link href="#about">Learn More</Link>
+          <Link href="#subscribe">Stay Updated</Link>
         </Button>
       </section>
 
@@ -141,7 +141,10 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="space-y-6 max-w-3xl mx-auto backdrop-blur-sm bg-card/50 p-8 rounded-lg border">
+      <section
+        id="subscribe"
+        className="space-y-6 max-w-3xl mx-auto backdrop-blur-sm bg-card/50 p-8 rounded-lg border"
+      >
         <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text">
           Stay Updated
         </h2>
